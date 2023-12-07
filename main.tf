@@ -35,7 +35,7 @@ resource "null_resource" "push_ecr" {
 }
 
 resource "aws_ecs_cluster" "github_runner_cluster" {
-  name = "Self-Hosted-Github-Runners"
+  name = var.cluster_name
 
   setting {
     name  = "containerInsights"
@@ -44,7 +44,8 @@ resource "aws_ecs_cluster" "github_runner_cluster" {
 }
 
 resource "aws_ecs_service" "runner" {
-  name                 = var.service_name
+  for_each             = var.runners
+  name                 = each.key
   cluster              = aws_ecs_cluster.github_runner_cluster.id
   task_definition      = aws_ecs_task_definition.runner.arn
   desired_count        = 1
@@ -126,7 +127,8 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_ecs_task_definition" "runner" {
-  family                   = "Runners"
+  for_each                 = var.runners
+  family                   = each.key
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 1024 * 1
@@ -134,11 +136,11 @@ resource "aws_ecs_task_definition" "runner" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = jsonencode([
     {
-      "name" : "runner",
+      "name" : "${each.key}",
       "image" : "${aws_ecr_repository.runner_image.repository_url}:${local.image_tag}",
       "portMappings" : [
         {
-          "name" : "runner-1-8080-tcp",
+          "name" : "${each.key}-8080-tcp",
           "containerPort" : 8080,
           "hostPort" : 8080,
           "protocol" : "tcp",
@@ -148,19 +150,19 @@ resource "aws_ecs_task_definition" "runner" {
       "environment" : [
         {
           "name" : "RUNNER_PREFIX",
-          "value" : "${var.runner_prefix}"
+          "value" : "${each.value.runner_prefix}"
         },
         {
           "name" : "GH_OWNER",
-          "value" : "${var.github_owner}"
+          "value" : "${each.value.org}"
         },
         {
           "name" : "GH_REPOSITORY",
-          "value" : "${var.github_repository}"
+          "value" : "${each.value.repository}"
         },
         {
           "name" : "LABELS",
-          "value" : "${var.labels}"
+          "value" : "${each.value.labels}"
         }
       ]
       "secrets" : [
