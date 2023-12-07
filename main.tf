@@ -43,11 +43,12 @@ resource "aws_ecs_cluster" "github_runner_cluster" {
 }
 
 resource "aws_ecs_service" "runner" {
-  name            = "github-runner"
-  cluster         = aws_ecs_cluster.github_runner_cluster.id
-  task_definition = aws_ecs_task_definition.runner.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
+  name                 = var.service_name
+  cluster              = aws_ecs_cluster.github_runner_cluster.id
+  task_definition      = aws_ecs_task_definition.runner.arn
+  desired_count        = 1
+  launch_type          = "FARGATE"
+  force_new_deployment = var.force_image_rebuild
   network_configuration {
     subnets          = var.subnet_ids
     security_groups  = var.security_group_ids
@@ -55,14 +56,14 @@ resource "aws_ecs_service" "runner" {
   }
 }
 
-# resource "aws_secretsmanager_secret" "github_token" {
-#   name = "github-token"
-# }
+resource "aws_secretsmanager_secret" "github_token" {
+  name = var.secret_name
+}
 
-# resource "aws_secretsmanager_secret_version" "github_token" {
-#   secret_id     = aws_secretsmanager_secret.github_token.id
-#   secret_string = var.runner_token
-# }
+resource "aws_secretsmanager_secret_version" "github_token" {
+  secret_id     = aws_secretsmanager_secret.github_token.id
+  secret_string = var.runner_token
+}
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "aws-ecs-github-runner-task-execution-role"
@@ -85,14 +86,14 @@ resource "aws_iam_role" "ecs_task_execution_role" {
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
-        # {
-        #   Sid    = "SecretsManager"
-        #   Effect = "Allow"
-        #   Action = [
-        #     "secretsmanager:GetSecretValue"
-        #   ]
-        #   Resource = "${aws_secretsmanager_secret.github_token.arn}"
-        # },
+        {
+          Sid    = "SecretsManager"
+          Effect = "Allow"
+          Action = [
+            "secretsmanager:GetSecretValue"
+          ]
+          Resource = "${aws_secretsmanager_secret.github_token.arn}"
+        },
         {
           Sid    = "ECR"
           Effect = "Allow"
@@ -119,36 +120,14 @@ resource "aws_iam_role" "ecs_task_execution_role" {
       ]
     })
   }
-  inline_policy {
-    name = "ecr"
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "ecr:BatchGetImage",
-            "ecr:GetDownloadUrlForLayer",
-            "ecr:GetAuthorizationToken",
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents",
-            "logs:DescribeLogStreams"
-          ]
-          Resource = "*"
-        },
-      ]
-    })
-  }
 }
 
 resource "aws_ecs_task_definition" "runner" {
   family                   = "Runners"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 1024
-  memory                   = 2048
+  cpu                      = 1024 * 1
+  memory                   = 1024 * 3
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = jsonencode([
     {
@@ -161,6 +140,30 @@ resource "aws_ecs_task_definition" "runner" {
           "hostPort" : 8080,
           "protocol" : "tcp",
           "appProtocol" : "http"
+        }
+      ],
+      "environment" : [
+        {
+          "name" : "RUNNER_PREFIX",
+          "value" : "${var.runner_prefix}"
+        },
+        {
+          "name" : "GH_OWNER",
+          "value" : "${var.github_owner}"
+        },
+        {
+          "name" : "GH_REPOSITORY",
+          "value" : "${var.github_repository}"
+        },
+        {
+          "name" : "LABELS",
+          "value" : "${var.labels}"
+        }
+      ]
+      "secrets" : [
+        {
+          "name" : "GH_TOKEN",
+          "valueFrom" : "${aws_secretsmanager_secret.github_token.arn}"
         }
       ],
       "essential" : true,

@@ -12,7 +12,34 @@ variable "security_group_ids" {
   type = list(string)
 }
 
-# variable "runner_token" {
-#   type      = string
-#   sensitive = true
-# }
+variable "runner_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "runner_prefix" {
+  type    = string
+  default = "aws-ecs-github-runner"
+}
+
+variable "github_owner" {
+  type = string
+}
+
+variable "github_repository" {
+  type = string
+}
+
+variable "labels" {
+  type = string
+}
+
+variable "secret_name" {
+  type    = string
+  default = "aws-ecs-github-runner-token"
+}
+
+variable "service_name" {
+  type    = string
+  default = "github-runner"
+}

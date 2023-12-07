@@ -1,17 +1,24 @@
 #!/bin/bash
 
-GH_OWNER="rstuhlmuller"
-GH_REPOSITORY="aws-ecs-github-runners"
-GH_TOKEN=""
+GH_OWNER=$GH_OWNER
+GH_REPOSITORY=$GH_REPOSITORY
+GH_TOKEN=$GH_TOKEN
+LABELS=$LABELS
 
 RUNNER_SUFFIX=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)
-RUNNER_NAME="dockerNode-${RUNNER_SUFFIX}"
+RUNNER_NAME="${RUNNER_PREFIX}-${RUNNER_SUFFIX}"
+
+echo "Configuring runner ${RUNNER_NAME}..."
 
 REG_TOKEN=$(curl -sX POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GH_TOKEN}" https://api.github.com/repos/${GH_OWNER}/${GH_REPOSITORY}/actions/runners/registration-token | jq .token --raw-output)
 
 cd /home/docker/actions-runner
 
-./config.sh --unattended --url https://github.com/${GH_OWNER}/${GH_REPOSITORY} --token ${REG_TOKEN} --name ${RUNNER_NAME}
+./config.sh --unattended --url https://github.com/${GH_OWNER}/${GH_REPOSITORY} \
+    --token ${REG_TOKEN} \
+    --name ${RUNNER_NAME} \
+    --labels "${LABELS:-default}" \
+    --replace
 
 cleanup() {
     echo "Removing runner..."
