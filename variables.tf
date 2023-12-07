@@ -15,6 +15,7 @@ variable "security_group_ids" {
 variable "runner_token" {
   type      = string
   sensitive = true
+  default   = ""
 }
 
 variable "runner_prefix" {
