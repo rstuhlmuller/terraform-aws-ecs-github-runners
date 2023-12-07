@@ -35,7 +35,6 @@ variable "secret_arn_override" {
 variable "runners" {
   type = map(object({
     org           = string
-    repository    = optional(string)
     labels        = optional(string)
     runner_prefix = optional(string)
   }))

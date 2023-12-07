@@ -14,7 +14,6 @@ module "aws_ecs_github_runner" {
   runners = {
     runner_1 = {
       org        = "My_Org"
-      repository = "repo"
       labels     = "aws,ecs,private"
     }
     runner_2 = {

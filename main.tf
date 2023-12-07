@@ -168,10 +168,6 @@ resource "aws_ecs_task_definition" "runner" {
           "value" : "${each.value.org}"
         },
         {
-          "name" : "GH_REPOSITORY",
-          "value" : "${each.value.repository}"
-        },
-        {
           "name" : "LABELS",
           "value" : "${each.value.labels}"
         }
