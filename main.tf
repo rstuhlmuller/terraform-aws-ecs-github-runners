@@ -56,6 +56,17 @@ resource "aws_ecs_service" "runner" {
     security_groups  = var.security_group_ids
     assign_public_ip = true
   }
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
+
+module "ecs-service-autoscaling" {
+  source           = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1.0.6"
+  for_each         = aws_ecs_service.runner
+  name_prefix      = "each.key"
+  ecs_cluster_name = aws_ecs_cluster.github_runner_cluster.name
+  ecs_service_name = each.value.name
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
