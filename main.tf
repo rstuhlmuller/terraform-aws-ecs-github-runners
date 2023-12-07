@@ -12,7 +12,7 @@ locals {
 
         docker push ${aws_ecr_repository.runner_image.repository_url}:${local.image_tag}
     EOT
-  github_token_arn = try(var.secret_arn_override, aws_secretsmanager_secret.github_token[0].arn)
+  github_token_arn = var.secret_arn_override == null ? aws_secretsmanager_secret.github_token[0].arn : var.secret_arn_override
 }
 
 resource "aws_ecr_repository" "runner_image" {
