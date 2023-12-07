@@ -140,7 +140,7 @@ resource "aws_ecs_task_definition" "runner" {
       "image" : "${aws_ecr_repository.runner_image.repository_url}:${local.image_tag}",
       "portMappings" : [
         {
-          "name" : "${each.key}-8080-tcp",
+          "name" : "${lower(each.key)}-8080-tcp",
           "containerPort" : 8080,
           "hostPort" : 8080,
           "protocol" : "tcp",
