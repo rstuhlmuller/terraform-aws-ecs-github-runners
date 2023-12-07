@@ -47,7 +47,7 @@ resource "aws_ecs_service" "runner" {
   for_each             = var.runners
   name                 = each.key
   cluster              = aws_ecs_cluster.github_runner_cluster.id
-  task_definition      = aws_ecs_task_definition.runner.arn
+  task_definition      = aws_ecs_task_definition.runner[each.key].arn
   desired_count        = 1
   launch_type          = "FARGATE"
   force_new_deployment = var.force_image_rebuild
