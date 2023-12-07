@@ -127,7 +127,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_ecs_task_definition" "runner" {
-  for_each                 = var.runners
+  for_each                 = "${var.cluster_name}.${var.runners}"
   family                   = each.key
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
