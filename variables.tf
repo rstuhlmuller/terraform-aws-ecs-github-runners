@@ -45,5 +45,6 @@ variable "service_name" {
 }
 
 variable "secret_arn_override" {
-  type = string
+  type    = string
+  default = null
 }
