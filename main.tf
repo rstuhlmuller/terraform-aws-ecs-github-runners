@@ -170,6 +170,10 @@ resource "aws_ecs_task_definition" "runner" {
         {
           "name" : "LABELS",
           "value" : "${each.value.labels}"
+        },
+        {
+          "name" : "RUNNER_GROUP",
+          "value" : "${each.value.runner_group}"
         }
       ]
       "secrets" : [

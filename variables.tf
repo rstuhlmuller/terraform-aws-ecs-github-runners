@@ -37,6 +37,7 @@ variable "runners" {
     org           = string
     labels        = optional(string)
     runner_prefix = optional(string)
+    runner_group  = optional(string)
   }))
 }
 
