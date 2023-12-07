@@ -95,7 +95,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
           Action = [
             "secretsmanager:GetSecretValue"
           ]
-          Resource = "${local.github_token_arn}"
+          Resource = "${regex("^arn:aws:secretsmanager:[a-z0-9-]+:[0-9]{12}:secret:[^:]+", local.github_token_arn)}"
         },
         {
           Sid    = "ECR"

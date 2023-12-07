@@ -48,4 +48,8 @@ variable "service_name" {
 variable "secret_arn_override" {
   type    = string
   default = null
+  validation {
+    condition = can(regex("^arn:aws:secretsmanager:[a-z0-9-]+:[0-9]{12}:secret:.+", var.secret_arn_override))
+    error_message = "Please enter a valid secrets manager ARN for the secret_arn_override variable."
+  }
 }
