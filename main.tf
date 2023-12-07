@@ -5,13 +5,14 @@ locals {
   dkr_img_src_path   = "${path.module}/docker-src"
   dkr_img_src_sha256 = sha256(join("", [for f in fileset(".", "${local.dkr_img_src_path}/**") : file(f)]))
 
-  dkr_build_cmd = <<-EOT
+  dkr_build_cmd    = <<-EOT
         docker build -t ${aws_ecr_repository.runner_image.repository_url}:${local.image_tag} ${local.dkr_img_src_path}
 
         aws ecr get-login-password --region ${data.aws_region.current.name} | docker login --username AWS --password-stdin ${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com
 
         docker push ${aws_ecr_repository.runner_image.repository_url}:${local.image_tag}
     EOT
+  github_token_arn = try(var.secret_arn_override, aws_secretsmanager_secret.github_token[0].arn)
 }
 
 resource "aws_ecr_repository" "runner_image" {
@@ -57,11 +58,13 @@ resource "aws_ecs_service" "runner" {
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
-  name = var.secret_name
+  count = var.secret_arn_override == null ? 1 : 0
+  name  = var.secret_name
 }
 
 resource "aws_secretsmanager_secret_version" "github_token" {
-  secret_id     = aws_secretsmanager_secret.github_token.id
+  count         = var.secret_arn_override == null ? 1 : 0
+  secret_id     = aws_secretsmanager_secret.github_token[0].id
   secret_string = var.runner_token
 }
 
@@ -92,7 +95,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
           Action = [
             "secretsmanager:GetSecretValue"
           ]
-          Resource = "${aws_secretsmanager_secret.github_token.arn}"
+          Resource = "${local.github_token_arn}"
         },
         {
           Sid    = "ECR"
@@ -163,7 +166,7 @@ resource "aws_ecs_task_definition" "runner" {
       "secrets" : [
         {
           "name" : "GH_TOKEN",
-          "valueFrom" : "${aws_secretsmanager_secret.github_token.arn}"
+          "valueFrom" : "${local.github_token_arn}"
         }
       ],
       "essential" : true,

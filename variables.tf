@@ -43,3 +43,7 @@ variable "service_name" {
   type    = string
   default = "github-runner"
 }
+
+variable "secret_arn_override" {
+  type = string
+}
