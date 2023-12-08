@@ -1,6 +1,8 @@
 # base image
 FROM --platform=linux/amd64 ubuntu:22.04
 
+HEALTHCHECK CMD curl --fail http://localhost:8080 || exit 1
+
 #input GitHub runner version argument
 # ARG RUNNER_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
