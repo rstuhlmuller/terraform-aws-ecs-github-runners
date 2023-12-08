@@ -20,6 +20,10 @@ resource "aws_ecr_repository" "runner_image" {
   name                 = local.ecr_repo
   image_tag_mutability = "MUTABLE"
 
+  encryption_configuration {
+    encryption_type = "KMS"
+  }
+
   image_scanning_configuration {
     scan_on_push = true
   }
@@ -55,7 +59,7 @@ resource "aws_ecs_service" "runner" {
   network_configuration {
     subnets          = var.subnet_ids
     security_groups  = var.security_group_ids
-    assign_public_ip = true
+    assign_public_ip = false
   }
   lifecycle {
     ignore_changes = [desired_count]
@@ -63,7 +67,7 @@ resource "aws_ecs_service" "runner" {
 }
 
 module "ecs-service-autoscaling" {
-  source                    = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1.0.6"
+  source                    = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1e0eee4ed3f67e5465289055155d3b5b7d27eb35" #1.0.6
   for_each                  = local.runners
   name_prefix               = each.key
   ecs_cluster_name          = aws_ecs_cluster.github_runner_cluster.name

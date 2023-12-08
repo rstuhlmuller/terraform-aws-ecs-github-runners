@@ -1,6 +1,8 @@
 # base image
 FROM --platform=linux/amd64 ubuntu:22.04
 
+HEALTHCHECK CMD curl --fail http://localhost:8080 || exit 1
+
 #input GitHub runner version argument
 # ARG RUNNER_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
@@ -9,7 +11,7 @@ LABEL BaseImage="ubuntu:22.04"
 LABEL RunnerVersion=${RUNNER_VERSION}
 
 # update the base packages + add a non-sudo user 
-RUN apt-get update -y && apt-get upgrade -y && useradd -m docker && usermod -aG sudo docker
+RUN apt-get update -y && apt-get upgrade -y && useradd -m docker
 
 # install the packages and dependencies along with jq so we can parse JSON (add additional packages as necessary)
 RUN apt-get install -y --no-install-recommends \
@@ -24,7 +26,7 @@ RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
 RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependencies.sh
 
 # add over the start.sh script
-ADD scripts/start.sh start.sh
+COPY scripts/start.sh start.sh
 
 # make the script executable
 RUN chmod +x start.sh
