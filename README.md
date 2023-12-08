@@ -1,5 +1,9 @@
-# avx-ecs-github-runners
- 
+# AWS ECS Github Runners Module
+
+Terraform module which deploys autoscaling ECS taks in an AWS ECS cluster.
+
+## Usage
+
 ```hcl
 module "aws_ecs_github_runner" {
   source = "git::https://github.com/rstuhlmuller/aws-ecs-github-runners.git?ref=main"
