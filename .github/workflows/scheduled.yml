@@ -1,6 +1,7 @@
 ---
 name: scheduled
 on:
+    pull_request:
     workflow_dispatch: { }  # Allows manually trigger this workflow
     schedule:
         - cron: "0 3 * * *"
