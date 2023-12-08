@@ -71,6 +71,8 @@ module "ecs-service-autoscaling" {
   scale_target_max_capacity = each.value.scale_target_max_capacity
   scale_target_min_capacity = each.value.scale_target_min_capacity
   min_cpu_period            = each.value.min_cpu_period
+  max_cpu_threshold         = each.value.max_cpu_threshold
+  min_cpu_threshold         = each.value.min_cpu_threshold
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
