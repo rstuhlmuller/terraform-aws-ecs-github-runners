@@ -48,7 +48,7 @@ resource "aws_ecs_service" "runner" {
   name                 = each.key
   cluster              = aws_ecs_cluster.github_runner_cluster.id
   task_definition      = aws_ecs_task_definition.runner[each.key].arn
-  desired_count        = var.scale_target_min_capacity
+  desired_count        = each.value.scale_target_min_capacity
   launch_type          = "FARGATE"
   force_new_deployment = var.force_image_rebuild
   network_configuration {
