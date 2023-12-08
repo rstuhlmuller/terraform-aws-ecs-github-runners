@@ -77,3 +77,8 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
+
+variable "ecs_task_execution_role_name" {
+  type    = string
+  default = "aws-ecs-github-runner-task-execution-role"
+}

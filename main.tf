@@ -165,7 +165,7 @@ resource "aws_secretsmanager_secret_version" "github_token" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "aws-ecs-github-runner-task-execution-role"
+  name = var.ecs_task_execution_role_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
