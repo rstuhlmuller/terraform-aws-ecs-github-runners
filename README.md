@@ -2,6 +2,24 @@
 
 Terraform module which deploys autoscaling ECS taks in an AWS ECS cluster.
 
+## Description
+This repository contains infrastructure as code (IaC) for deploying GitHub Actions self-hosted runners on AWS ECS.
+
+It creates the following resources:
+
+- ECS cluster - Cluster to host the GitHub runner containers
+- Task definition - Defines the GitHub runner container to deploy
+- ECS services - Runs the task definition as a service to maintain runner instances
+- IAM roles and policies - Grants permissions for ECS agent and tasks
+- Secrets Manager secret - Stores github token (can be overwritten)
+- Github Runner Docker container
+
+The runners register themselves to a specified GitHub repository or organization automatically on boot. The number of runners can be adjusted by changing the desired count of the ECS service.
+
+This enables GitHub Actions workloads to scale quickly by adding/removing containers without managing servers directly. Runners auto-update and register themselves, providing a hands-off GitHub runner management system.
+
+The infrastructure is defined as code with HashiCorp Terraform and can be easily extended to other environments. Custom actions and parameters can be configured by modifying the included templates and variables.
+
 ## Usage
 
 ```hcl
