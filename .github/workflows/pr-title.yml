@@ -23,6 +23,7 @@ jobs:
             docs
             ci
             chore
+            improvement
           requireScope: false
           subjectPattern: ^[A-Z].+$
           subjectPatternError: |
