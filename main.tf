@@ -173,7 +173,7 @@ resource "aws_ecs_task_definition" "runner" {
         },
         {
           "name" : "RUNNER_GROUP",
-          "value" : "${each.value.runner_group}"
+          "value" : "${each.value.runner_group == "" ? Default : each.value.runner_group}"
         }
       ]
       "secrets" : [
