@@ -46,8 +46,10 @@ variable "default_runner_config" {
     scale_target_min_capacity = optional(number)
     scale_target_max_capacity = optional(number)
     min_cpu_period            = optional(number)
+    max_cpu_period            = optional(number)
     max_cpu_threshold         = optional(number)
     min_cpu_threshold         = optional(number)
+    max_cpu_evaluation_period = optional(number)
   })
   default = {
     org                       = ""
@@ -57,8 +59,11 @@ variable "default_runner_config" {
     scale_target_min_capacity = 1
     scale_target_max_capacity = 10
     min_cpu_period            = 10
+    max_cpu_period            = 120
     max_cpu_threshold         = 80
     min_cpu_threshold         = 10
+    max_cpu_evaluation_period = 3
+    min_cpu_evaluation_period = 3
   }
 }
 
