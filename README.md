@@ -1,4 +1,4 @@
-# AWS ECS Github Runners Module
+# AWS ECS Self-Hosted Github Runners Module
 
 Terraform module which deploys autoscaling ECS taks in an AWS ECS cluster.
 
