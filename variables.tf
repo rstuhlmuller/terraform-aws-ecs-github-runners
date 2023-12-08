@@ -50,6 +50,7 @@ variable "default_runner_config" {
     max_cpu_threshold         = optional(number)
     min_cpu_threshold         = optional(number)
     max_cpu_evaluation_period = optional(number)
+    min_cpu_evaluation_period = optional(number)
   })
   default = {
     org                       = ""
