@@ -18,7 +18,7 @@ cd /home/docker/actions-runner
     --token ${REG_TOKEN} \
     --name ${RUNNER_NAME} \
     --labels "${LABELS:-default}" \
-    --runner-group ${RUNNER_GROUP:-Default} \
+    --runnergroup ${RUNNER_GROUP:-Default} \
     --replace
 
 cleanup() {
