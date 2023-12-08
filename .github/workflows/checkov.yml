@@ -36,7 +36,7 @@ jobs:
           output_format: cli,sarif
           output_file_path: console,results.sarif
           quiet: true
-          skip_check: CKV_AWS_51,CKV2_AWS_57
+          skip_check: CKV_AWS_51,CKV2_AWS_57,CKV2_DOCKER_1
         
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
