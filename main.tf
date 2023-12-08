@@ -150,8 +150,6 @@ resource "aws_appautoscaling_target" "scale_target" {
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = each.value.scale_target_min_capacity
   max_capacity       = each.value.scale_target_max_capacity
-
-  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
