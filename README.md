@@ -68,9 +68,7 @@ module "aws_ecs_github_runner" {
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ecs-service-autoscaling"></a> [ecs-service-autoscaling](#module\_ecs-service-autoscaling) | git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git | 1e0eee4ed3f67e5465289055155d3b5b7d27eb35 |
+No modules.
 
 ## Resources
 
