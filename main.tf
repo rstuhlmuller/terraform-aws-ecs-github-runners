@@ -63,10 +63,10 @@ resource "aws_ecs_service" "runner" {
 
 module "ecs-service-autoscaling" {
   source           = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1.0.6"
-  for_each         = aws_ecs_service.runner
+  for_each         = var.runners
   name_prefix      = "each.key"
   ecs_cluster_name = aws_ecs_cluster.github_runner_cluster.name
-  ecs_service_name = each.value.name
+  ecs_service_name = aws_ecs_service.runner[each.key].name
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
