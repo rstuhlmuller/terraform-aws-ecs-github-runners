@@ -8,11 +8,12 @@ This repository contains infrastructure as code (IaC) for deploying GitHub Actio
 It creates the following resources:
 
 - ECS cluster - Cluster to host the GitHub runner containers
+- ECR repository - Stores the custom GitHub runner container image
+- Dockerfile and scripts - Defines and builds the GitHub runner Docker image, pushes it to ECR
 - Task definition - Defines the GitHub runner container to deploy
 - ECS services - Runs the task definition as a service to maintain runner instances
 - IAM roles and policies - Grants permissions for ECS agent and tasks
 - Secrets Manager secret - Stores github token (can be overwritten)
-- Github Runner Docker container
 
 The runners register themselves to a specified GitHub repository or organization automatically on boot. The number of runners can be adjusted by changing the desired count of the ECS service.
 
