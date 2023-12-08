@@ -45,3 +45,18 @@ variable "secret_name" {
   type    = string
   default = "github-token"
 }
+
+variable "scale_target_max_capacity" {
+  type    = number
+  default = 10
+}
+
+variable "scale_target_min_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "min_cpu_period" {
+  type    = number
+  default = 10
+}

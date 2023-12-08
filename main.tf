@@ -48,7 +48,7 @@ resource "aws_ecs_service" "runner" {
   name                 = each.key
   cluster              = aws_ecs_cluster.github_runner_cluster.id
   task_definition      = aws_ecs_task_definition.runner[each.key].arn
-  desired_count        = 1
+  desired_count        = var.scale_target_min_capacity
   launch_type          = "FARGATE"
   force_new_deployment = var.force_image_rebuild
   network_configuration {
@@ -62,11 +62,14 @@ resource "aws_ecs_service" "runner" {
 }
 
 module "ecs-service-autoscaling" {
-  source           = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1.0.6"
-  for_each         = var.runners
-  name_prefix      = each.key
-  ecs_cluster_name = aws_ecs_cluster.github_runner_cluster.name
-  ecs_service_name = aws_ecs_service.runner[each.key].name
+  source                    = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1.0.6"
+  for_each                  = var.runners
+  name_prefix               = each.key
+  ecs_cluster_name          = aws_ecs_cluster.github_runner_cluster.name
+  ecs_service_name          = aws_ecs_service.runner[each.key].name
+  scale_target_max_capacity = var.scale_target_max_capacity
+  scale_target_min_capacity = var.scale_target_min_capacity
+  min_cpu_period            = var.min_cpu_period
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
