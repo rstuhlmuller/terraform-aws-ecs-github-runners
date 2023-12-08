@@ -76,6 +76,11 @@ module "aws_ecs_github_runner" {
 
 | Name | Type |
 |------|------|
+| [aws_appautoscaling_policy.scale_down_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
+| [aws_appautoscaling_policy.scale_up_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
+| [aws_appautoscaling_target.scale_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
+| [aws_cloudwatch_metric_alarm.cpu_high](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.cpu_low](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_ecr_repository.runner_image](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecs_cluster.github_runner_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_service.runner](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
@@ -94,7 +99,7 @@ module "aws_ecs_github_runner" {
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | `"Self-Hosted-Github-Runners"` | no |
-| <a name="input_default_runner_config"></a> [default\_runner\_config](#input\_default\_runner\_config) | n/a | <pre>object({<br>    org                       = string<br>    labels                    = optional(string)<br>    runner_prefix             = optional(string)<br>    runner_group              = optional(string)<br>    scale_target_min_capacity = optional(number)<br>    scale_target_max_capacity = optional(number)<br>    min_cpu_period            = optional(number)<br>    max_cpu_threshold         = optional(number)<br>    min_cpu_threshold         = optional(number)<br>  })</pre> | <pre>{<br>  "labels": null,<br>  "max_cpu_threshold": 80,<br>  "min_cpu_period": 10,<br>  "min_cpu_threshold": 10,<br>  "org": "",<br>  "runner_group": null,<br>  "runner_prefix": "aws-ecs-github-runner",<br>  "scale_target_max_capacity": 10,<br>  "scale_target_min_capacity": 1<br>}</pre> | no |
+| <a name="input_default_runner_config"></a> [default\_runner\_config](#input\_default\_runner\_config) | n/a | <pre>object({<br>    org                       = string<br>    labels                    = optional(string)<br>    runner_prefix             = optional(string)<br>    runner_group              = optional(string)<br>    scale_target_min_capacity = optional(number)<br>    scale_target_max_capacity = optional(number)<br>    min_cpu_period            = optional(number)<br>    max_cpu_threshold         = optional(number)<br>    min_cpu_threshold         = optional(number)<br>    max_cpu_evaluation_period = optional(number)<br>    min_cpu_evaluation_period = optional(number)<br>  })</pre> | <pre>{<br>  "labels": null,<br>  "max_cpu_evaluation_period": 3,<br>  "max_cpu_threshold": 80,<br>  "min_cpu_evaluation_period": 3,<br>  "min_cpu_period": 10,<br>  "min_cpu_threshold": 10,<br>  "org": "",<br>  "runner_group": null,<br>  "runner_prefix": "aws-ecs-github-runner",<br>  "scale_target_max_capacity": 10,<br>  "scale_target_min_capacity": 1<br>}</pre> | no |
 | <a name="input_force_image_rebuild"></a> [force\_image\_rebuild](#input\_force\_image\_rebuild) | n/a | `bool` | `false` | no |
 | <a name="input_runner_token"></a> [runner\_token](#input\_runner\_token) | n/a | `string` | `""` | no |
 | <a name="input_runners"></a> [runners](#input\_runners) | n/a | `any` | `{}` | no |
