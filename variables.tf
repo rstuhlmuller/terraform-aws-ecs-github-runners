@@ -66,3 +66,8 @@ variable "secret_name" {
   type    = string
   default = "github-token"
 }
+
+variable "tags" {
+  type    = map(string)
+  default = {}
+}
