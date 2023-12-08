@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.3](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.2...v1.0.3) (2023-12-08)
+
+
+### Bug Fixes
+
+* Default values ([#11](https://github.com/rstuhlmuller/aws-ecs-github-runners/issues/11)) ([3679ecb](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/3679ecb1b1353f894941a4535ba64049f138c113))
+* Missing default ([#12](https://github.com/rstuhlmuller/aws-ecs-github-runners/issues/12)) ([4c11ea3](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/4c11ea34479dcbb678c4079a4165cc8b053e7b95))
+* Remove tags for this resource ([#13](https://github.com/rstuhlmuller/aws-ecs-github-runners/issues/13)) ([085f002](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/085f0024cf2ea887d3effcc8003cd4a5b8636a41))
+* Tags and alarms ([#10](https://github.com/rstuhlmuller/aws-ecs-github-runners/issues/10)) ([bbea9f2](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/bbea9f2963f7fea873401ed571da40d346d3191b))
+
 ### [1.0.2](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.1...v1.0.2) (2023-12-08)
 
 
