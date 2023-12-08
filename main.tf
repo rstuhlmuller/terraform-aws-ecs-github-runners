@@ -27,6 +27,7 @@ resource "aws_ecr_repository" "runner_image" {
   image_scanning_configuration {
     scan_on_push = true
   }
+  tags = local.tags
 }
 
 resource "null_resource" "push_ecr" {
@@ -46,6 +47,7 @@ resource "aws_ecs_cluster" "github_runner_cluster" {
     name  = "containerInsights"
     value = "enabled"
   }
+  tags = local.tags
 }
 
 resource "aws_ecs_service" "runner" {
@@ -64,24 +66,98 @@ resource "aws_ecs_service" "runner" {
   lifecycle {
     ignore_changes = [desired_count]
   }
+  tags = local.tags
 }
 
-module "ecs-service-autoscaling" {
-  source                    = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1e0eee4ed3f67e5465289055155d3b5b7d27eb35" #1.0.6
-  for_each                  = local.runners
-  name_prefix               = each.key
-  ecs_cluster_name          = aws_ecs_cluster.github_runner_cluster.name
-  ecs_service_name          = aws_ecs_service.runner[each.key].name
-  scale_target_max_capacity = each.value.scale_target_max_capacity
-  scale_target_min_capacity = each.value.scale_target_min_capacity
-  min_cpu_period            = each.value.min_cpu_period
-  max_cpu_threshold         = each.value.max_cpu_threshold
-  min_cpu_threshold         = each.value.min_cpu_threshold
+resource "aws_cloudwatch_metric_alarm" "cpu_high" {
+  for_each            = local.runners
+  alarm_name          = "${each.key}-cpu-high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = each.value.max_cpu_evaluation_period
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = each.value.max_cpu_period
+  statistic           = "Maximum"
+  threshold           = each.value.max_cpu_threshold
+  dimensions = {
+    ClusterName = aws_ecs_cluster.github_runner_cluster.name
+    ServiceName = aws_ecs_service.runner[each.key].name
+  }
+  alarm_actions = [aws_appautoscaling_policy.scale_up_policy[each.key].arn]
+
+  tags = var.tags
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu_low" {
+  for_each            = local.runners
+  alarm_name          = "${each.key}-cpu-low"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = each.value.min_cpu_evaluation_period
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = each.value.min_cpu_period
+  statistic           = "Average"
+  threshold           = each.value.min_cpu_threshold
+  dimensions = {
+    ClusterName = aws_ecs_cluster.github_runner_cluster.name
+    ServiceName = aws_ecs_service.runner[each.key].name
+  }
+  alarm_actions = [aws_appautoscaling_policy.scale_down_policy[each.key].arn]
+
+  tags = var.tags
+}
+
+resource "aws_appautoscaling_policy" "scale_up_policy" {
+  for_each           = local.runners
+  name               = "${each.key}-scale-up-policy"
+  depends_on         = [aws_appautoscaling_target.scale_target]
+  service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.github_runner_cluster.name}/${aws_ecs_service.runner[each.key].name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = 1
+    }
+  }
+}
+
+resource "aws_appautoscaling_policy" "scale_down_policy" {
+  for_each           = local.runners
+  name               = "${each.key}-scale-down-policy"
+  depends_on         = [aws_appautoscaling_target.scale_target]
+  service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.github_runner_cluster.name}/${aws_ecs_service.runner[each.key].name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+    step_adjustment {
+      metric_interval_upper_bound = 0
+      scaling_adjustment          = -1
+    }
+  }
+}
+
+resource "aws_appautoscaling_target" "scale_target" {
+  for_each           = local.runners
+  service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.github_runner_cluster.name}/${aws_ecs_service.runner[each.key].name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  min_capacity       = each.value.scale_target_min_capacity
+  max_capacity       = each.value.scale_target_max_capacity
+
+  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
   count = var.secret_arn_override == null ? 1 : 0
   name  = var.secret_name
+  tags  = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "github_token" {
@@ -145,6 +221,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
       ]
     })
   }
+  tags = var.tags
 }
 
 resource "aws_ecs_task_definition" "runner" {
@@ -204,4 +281,5 @@ resource "aws_ecs_task_definition" "runner" {
       }
     }
   ])
+  tags = var.tags
 }
