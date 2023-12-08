@@ -7,9 +7,8 @@ on:
       - main
       - master
     paths:
-      - '**/*.tpl'
-      - '**/*.py'
       - '**/*.tf'
+      - 'docker-src/**'
       - '.github/workflows/release.yml'
 
 jobs:
