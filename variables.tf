@@ -33,7 +33,12 @@ variable "secret_arn_override" {
 }
 
 variable "runners" {
-  type = map(object({
+  type    = any
+  default = {}
+}
+
+variable "default_runner_config" {
+  type = object({
     org                       = string
     labels                    = optional(string)
     runner_prefix             = optional(string)
@@ -41,7 +46,16 @@ variable "runners" {
     scale_target_min_capacity = optional(number)
     scale_target_max_capacity = optional(number)
     min_cpu_period            = optional(number)
-  }))
+  })
+  default = {
+    org                       = ""
+    labels                    = null
+    runner_prefix             = "aws-ecs-github-runner"
+    runner_group              = null
+    scale_target_min_capacity = 1
+    scale_target_max_capacity = 10
+    min_cpu_period            = 10
+  }
 }
 
 variable "secret_name" {

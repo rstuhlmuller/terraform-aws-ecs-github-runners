@@ -13,6 +13,7 @@ locals {
         docker push ${aws_ecr_repository.runner_image.repository_url}:${local.image_tag}
     EOT
   github_token_arn = var.secret_arn_override == null ? aws_secretsmanager_secret.github_token[0].arn : var.secret_arn_override
+  runners          = { for name, runner_config in var.runners : name => merge(var.default_runner_config, runner_config) }
 }
 
 resource "aws_ecr_repository" "runner_image" {
@@ -44,7 +45,7 @@ resource "aws_ecs_cluster" "github_runner_cluster" {
 }
 
 resource "aws_ecs_service" "runner" {
-  for_each             = var.runners
+  for_each             = local.runners
   name                 = each.key
   cluster              = aws_ecs_cluster.github_runner_cluster.id
   task_definition      = aws_ecs_task_definition.runner[each.key].arn
@@ -63,7 +64,7 @@ resource "aws_ecs_service" "runner" {
 
 module "ecs-service-autoscaling" {
   source                    = "git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git?ref=1.0.6"
-  for_each                  = var.runners
+  for_each                  = local.runners
   name_prefix               = each.key
   ecs_cluster_name          = aws_ecs_cluster.github_runner_cluster.name
   ecs_service_name          = aws_ecs_service.runner[each.key].name
@@ -141,7 +142,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_ecs_task_definition" "runner" {
-  for_each                 = var.runners
+  for_each                 = local.runners
   family                   = "${var.cluster_name}_${each.key}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
