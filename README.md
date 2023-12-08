@@ -34,6 +34,8 @@ module "aws_ecs_github_runner" {
     "<subnet_2>"
   ]
 
+  runner_token = "<github_token with permissions to generate runner>"
+
   runners = {
     runner_1 = {
       org        = "My_Org"
