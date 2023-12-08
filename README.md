@@ -68,14 +68,17 @@ module "aws_ecs_github_runner" {
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ecs-service-autoscaling"></a> [ecs-service-autoscaling](#module\_ecs-service-autoscaling) | git::https://github.com/cn-terraform/terraform-aws-ecs-service-autoscaling.git | 1e0eee4ed3f67e5465289055155d3b5b7d27eb35 |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [aws_appautoscaling_policy.scale_down_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
+| [aws_appautoscaling_policy.scale_up_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
+| [aws_appautoscaling_target.scale_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
+| [aws_cloudwatch_metric_alarm.cpu_high](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.cpu_low](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_ecr_repository.runner_image](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecs_cluster.github_runner_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_service.runner](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
@@ -100,6 +103,7 @@ module "aws_ecs_github_runner" {
 | <a name="input_runners"></a> [runners](#input\_runners) | n/a | `any` | `{}` | no |
 | <a name="input_secret_arn_override"></a> [secret\_arn\_override](#input\_secret\_arn\_override) | n/a | `string` | `null` | no |
 | <a name="input_secret_name"></a> [secret\_name](#input\_secret\_name) | n/a | `string` | `"github-token"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
 
 ## Outputs
 
