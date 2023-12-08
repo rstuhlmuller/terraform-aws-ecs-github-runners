@@ -23,7 +23,7 @@ jobs:
             docs
             ci
             chore
-            improvement
+            refactor
           requireScope: false
           subjectPattern: ^[A-Z].+$
           subjectPatternError: |
