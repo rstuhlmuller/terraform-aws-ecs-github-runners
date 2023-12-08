@@ -12,6 +12,8 @@ permissions: read-all
 jobs:
   main:
     name: Validate PR title
+    permissions: 
+        pull-requests: write
     runs-on: ubuntu-latest
     steps:
       # Please look up the latest version from
