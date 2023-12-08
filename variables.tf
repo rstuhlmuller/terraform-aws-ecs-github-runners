@@ -34,29 +34,17 @@ variable "secret_arn_override" {
 
 variable "runners" {
   type = map(object({
-    org           = string
-    labels        = optional(string)
-    runner_prefix = optional(string)
-    runner_group  = optional(string)
+    org                       = string
+    labels                    = optional(string)
+    runner_prefix             = optional(string)
+    runner_group              = optional(string)
+    scale_target_min_capacity = optional(number)
+    scale_target_max_capacity = optional(number)
+    min_cpu_period            = optional(number)
   }))
 }
 
 variable "secret_name" {
   type    = string
   default = "github-token"
-}
-
-variable "scale_target_max_capacity" {
-  type    = number
-  default = 10
-}
-
-variable "scale_target_min_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "min_cpu_period" {
-  type    = number
-  default = 10
 }

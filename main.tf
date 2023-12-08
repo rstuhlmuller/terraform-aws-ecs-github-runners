@@ -67,9 +67,9 @@ module "ecs-service-autoscaling" {
   name_prefix               = each.key
   ecs_cluster_name          = aws_ecs_cluster.github_runner_cluster.name
   ecs_service_name          = aws_ecs_service.runner[each.key].name
-  scale_target_max_capacity = var.scale_target_max_capacity
-  scale_target_min_capacity = var.scale_target_min_capacity
-  min_cpu_period            = var.min_cpu_period
+  scale_target_max_capacity = each.value.scale_target_max_capacity
+  scale_target_min_capacity = each.value.scale_target_min_capacity
+  min_cpu_period            = each.value.min_cpu_period
 }
 
 resource "aws_secretsmanager_secret" "github_token" {
