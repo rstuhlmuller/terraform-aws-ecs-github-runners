@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.4](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.3...v1.0.4) (2023-12-09)
+
+
+### Bug Fixes
+
+* ability to add custom role name ([c2f9f6e](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/c2f9f6e300e25352921f8f712cbae09afbabb7f8))
+
 ### [1.0.3](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.2...v1.0.3) (2023-12-08)
 
 
