@@ -111,3 +111,11 @@ No modules.
 
 No outputs.
 <!-- END_TF_DOCS -->
+
+## Authors
+
+Module is maintained by [Rodman Stuhlmuller](https://github.com/rstuhlmuller)
+
+## License
+
+MIT Licensed. See [LICENSE](https://github.com/rstuhlmuller/aws-ecs-github-runners/blob/main/LICENSE) for full details.
