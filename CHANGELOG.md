@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.5](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.4...v1.0.5) (2023-12-16)
+
+
+### Bug Fixes
+
+* ability to make null ([ad2f4b7](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/ad2f4b7bb9a7f527be4fea2a0e3a8717110550f3))
+* packages ([9e003ec](https://github.com/rstuhlmuller/aws-ecs-github-runners/commit/9e003ecd2a53380f4e1aad11cea29f476be8cf58))
+
 ### [1.0.4](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.3...v1.0.4) (2023-12-09)
 
 
