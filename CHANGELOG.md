@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.1.2](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/compare/v1.1.1...v1.1.2) (2024-03-06)
+
+
+### Bug Fixes
+
+* this ([2717c88](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/commit/2717c88da6bd5221795ca70a391368e19036c50c))
+* This ([#16](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/issues/16)) ([acd0fd1](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/commit/acd0fd1f83d4d38e61b9b529a2b35bd7f837d590))
+
 ### [1.1.1](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/compare/v1.1.0...v1.1.1) (2024-03-06)
 
 
