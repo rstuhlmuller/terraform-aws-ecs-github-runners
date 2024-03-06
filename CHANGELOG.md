@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/compare/v1.0.5...v1.1.0) (2024-03-06)
+
+
+### Features
+
+* Dynamic cpu and memory vars ([#14](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/issues/14)) ([5755b6d](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/commit/5755b6d9d96a1fcb04fea76cb07109d433875397))
+
 ### [1.0.5](https://github.com/rstuhlmuller/aws-ecs-github-runners/compare/v1.0.4...v1.0.5) (2023-12-16)
 
 
