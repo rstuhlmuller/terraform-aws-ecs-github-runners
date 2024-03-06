@@ -82,3 +82,15 @@ variable "ecs_task_execution_role_name" {
   type    = string
   default = "aws-ecs-github-runner-task-execution-role"
 }
+
+variable "cpu" {
+  type        = number
+  description = "Number of CPUs for each runner"
+  default     = 1
+}
+
+variable "memory" {
+  type        = number
+  description = "Memory in GB for each runner"
+  default     = 1
+}
