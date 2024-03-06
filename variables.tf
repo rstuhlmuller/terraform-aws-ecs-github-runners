@@ -43,6 +43,8 @@ variable "default_runner_config" {
     labels                    = optional(string)
     runner_prefix             = optional(string)
     runner_group              = optional(string)
+    cpu                       = optional(number)
+    memory                    = optional(number)
     scale_target_min_capacity = optional(number)
     scale_target_max_capacity = optional(number)
     min_cpu_period            = optional(number)
@@ -57,6 +59,8 @@ variable "default_runner_config" {
     labels                    = null
     runner_prefix             = "aws-ecs-github-runner"
     runner_group              = null
+    cpu                       = 1
+    memory                    = 3
     scale_target_min_capacity = 1
     scale_target_max_capacity = 10
     min_cpu_period            = 10
@@ -81,16 +85,4 @@ variable "tags" {
 variable "ecs_task_execution_role_name" {
   type    = string
   default = "aws-ecs-github-runner-task-execution-role"
-}
-
-variable "cpu" {
-  type        = number
-  description = "Number of CPUs for each runner"
-  default     = 1
-}
-
-variable "memory" {
-  type        = number
-  description = "Memory in GB for each runner"
-  default     = 3
 }
