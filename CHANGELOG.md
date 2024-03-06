@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.1.1](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/compare/v1.1.0...v1.1.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* cpu and memory ([fe71efe](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/commit/fe71efe47087fa73329f2ee7bba548e3ec3df9e7))
+* CPU Vars ([#15](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/issues/15)) ([14d673b](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/commit/14d673bc16eea9f0fb7ad7dbf09c0495dc268895))
+* vars ([37889a3](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/commit/37889a33a5466a24b44e73eb49df914b813d105f))
+
 ## [1.1.0](https://github.com/rstuhlmuller/terraform-aws-ecs-github-runners/compare/v1.0.5...v1.1.0) (2024-03-06)
 
 
