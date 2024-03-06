@@ -92,5 +92,5 @@ variable "cpu" {
 variable "memory" {
   type        = number
   description = "Memory in GB for each runner"
-  default     = 1
+  default     = 3
 }
