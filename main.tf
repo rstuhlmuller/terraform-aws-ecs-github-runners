@@ -227,8 +227,8 @@ resource "aws_ecs_task_definition" "runner" {
   family                   = "${var.cluster_name}_${each.key}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 1024 * 1
-  memory                   = 1024 * 3
+  cpu                      = 1024 * ${var.cpu}
+  memory                   = 1024 * ${var.memory}
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = jsonencode([
     {
